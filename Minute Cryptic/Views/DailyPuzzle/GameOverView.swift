@@ -119,7 +119,7 @@ struct GameOverView: View {
                 }
             }
             Text("Support this project by watching our 90-second explanation. Leave a comment and see what others thought!")
-                .font(.custom("mulish", size: 15))
+                .font(.custom("mulish", size: 20))
                 .foregroundStyle(.black)
                 .padding(.horizontal, 10)
             

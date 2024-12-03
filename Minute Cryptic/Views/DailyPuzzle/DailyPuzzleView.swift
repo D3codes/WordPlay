@@ -23,6 +23,8 @@ struct DailyPuzzleView: View {
     
     @FocusState var focusedLetter: Int?
     
+    @State var presentHelpSheet: Bool = false
+    
     func savePuzzle() {
         if let encoded = try? JSONEncoder().encode(dailyPuzzle) {
             self.defaults.set(encoded, forKey: UserDefaultsKeys().dailyPuzzleKey())
@@ -137,40 +139,42 @@ struct DailyPuzzleView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HeaderView()
-            ClueView(dailyPuzzle: $dailyPuzzle)
-            AnswerView(
-                dailyPuzzle: $dailyPuzzle,
-                focusedLetter: $focusedLetter,
-                handleCharacterChange: { handleCharacterChange(index: $0) })
+            HeaderView(showHelpSheet: $presentHelpSheet)
+            ScrollView {
+                ClueView(dailyPuzzle: $dailyPuzzle)
+                AnswerView(
+                    dailyPuzzle: $dailyPuzzle,
+                    focusedLetter: $focusedLetter,
+                    handleCharacterChange: { handleCharacterChange(index: $0) })
                 .padding(.vertical, 30)
                 .shake($shake)
-            if !dailyPuzzle.solved {
-                ZStack {
-                    VStack {
-                        ActionButtonsView(
-                            enableCheck: $enableCheck,
-                            checkAnswer: { self.checkAnswer() },
-                            showHint: { self.showHint() },
-                            revealLetter: { self.revealLetter() })
-                            .padding(.bottom, 25)
-                        ParView(dailyPuzzle: $dailyPuzzle)
-                        Spacer()
-                    }
-                    if isPopupPresented {
+                if !dailyPuzzle.solved {
+                    ZStack {
                         VStack {
+                            ActionButtonsView(
+                                enableCheck: $enableCheck,
+                                checkAnswer: { self.checkAnswer() },
+                                showHint: { self.showHint() },
+                                revealLetter: { self.revealLetter() })
+                            .padding(.bottom, 25)
+                            ParView(dailyPuzzle: $dailyPuzzle)
                             Spacer()
-                            PopupView(
-                                isPresented: $isPopupPresented,
-                                title: $popupTitle,
-                                message: $popupMessage,
-                                backgroundColor: $popupBackgroundColor
-                            )
+                        }
+                        if isPopupPresented {
+                            VStack {
+                                Spacer()
+                                PopupView(
+                                    isPresented: $isPopupPresented,
+                                    title: $popupTitle,
+                                    message: $popupMessage,
+                                    backgroundColor: $popupBackgroundColor
+                                )
+                            }
                         }
                     }
+                } else {
+                    GameOverView(dailyPuzzle: dailyPuzzle)
                 }
-            } else {
-                GameOverView(dailyPuzzle: dailyPuzzle)
             }
         }
         .onKeyPress(keys: [.delete]) { press in
@@ -187,27 +191,28 @@ struct DailyPuzzleView: View {
             self.focusedLetter = 0
         }
         .navigationBarBackButtonHidden()
-//        .sheet(isPresented: $showGameOver, content: {
-//            GameOverView(dailyPuzzle: dailyPuzzle)
-//                .presentationDetents([.medium, .large])
-//        })
+        .sheet(isPresented: $presentHelpSheet, content: {
+            HelpView()
+        })
     }
 }
 
 #Preview {
-    DailyPuzzleView(dailyPuzzle: DailyPuzzle(puzzle: DailyPuzzleApiResponse(
-        letterRevealOrder: [0,3,2,1,4],
-        hint: "The definition part of the clue is 'Passed out'",
-        clue: [
-            Clue(text: "Passed out", type: "definition"),
-            Clue(text: "from", type: nil),
-            Clue(text: "nitrogen leaking out of dental surgery", type: "wordplay")
-        ],
-        answer: "DEALT",
-        config: [5],
-        par: 2,
-        explainerVideo: "https://youtu.be/_M7S2rRyCdE",
-        date: "2024-11-28",
-        thumbnail: "https://i.ytimg.com/vi/_M7S2rRyCdE/maxresdefault.jpg"
-    )))
+    NavigationStack {
+        DailyPuzzleView(dailyPuzzle: DailyPuzzle(puzzle: DailyPuzzleApiResponse(
+            letterRevealOrder: [0,3,2,1,4],
+            hint: "The definition part of the clue is 'Passed out'",
+            clue: [
+                Clue(text: "Passed out", type: "definition"),
+                Clue(text: "from", type: nil),
+                Clue(text: "nitrogen leaking out of dental surgery", type: "wordplay")
+            ],
+            answer: "DEALT",
+            config: [5],
+            par: 2,
+            explainerVideo: "https://youtu.be/_M7S2rRyCdE",
+            date: "2024-11-28",
+            thumbnail: "https://i.ytimg.com/vi/_M7S2rRyCdE/maxresdefault.jpg"
+        )))
+    }
 }

@@ -12,6 +12,8 @@ struct HomeView: View {
     let apiWrapper: ApiWrapper = ApiWrapper()
     
     @State var dailyPuzzle: DailyPuzzle?
+    @State private var timeRemaining = 100
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     func getDailyPuzzle() async {
         if let data = defaults.object(forKey: UserDefaultsKeys().dailyPuzzleKey()) as? Data,
@@ -29,6 +31,14 @@ struct HomeView: View {
         }
     }
     
+    func convertSecondsToDateString(seconds: Int) -> String {
+        let interval = Int(seconds)
+        let seconds = interval % 60
+        let minutes = (interval / 60) % 60
+        let hours = (interval / (60*60)) % 60
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -42,6 +52,7 @@ struct HomeView: View {
                             .frame(height: 150)
                             .padding(.horizontal, 15)
                             .padding(.top, 15)
+                            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         
                         VStack {
                             Text("The Daily Clue")
@@ -52,20 +63,7 @@ struct HomeView: View {
                                 .font(.custom("mulish", size: 20))
                                 .foregroundStyle(.black)
                             
-                            if dailyPuzzle != nil {
-                                NavigationLink(destination: DailyPuzzleView(dailyPuzzle: dailyPuzzle!)) {
-                                    ZStack {
-                                        Capsule()
-                                            .stroke(.black, lineWidth: 5)
-                                            .fill(.mcPurple)
-                                            .frame(width: 200, height: 50)
-                                        Text("play")
-                                            .font(.custom("sansita", size: 25))
-                                            .tint(.black)
-                                            .bold()
-                                    }
-                                }
-                            } else {
+                            if dailyPuzzle == nil {
                                 ZStack {
                                     Capsule()
                                         .stroke(.black, lineWidth: 5)
@@ -82,6 +80,31 @@ struct HomeView: View {
                                       .progressViewStyle(CircularProgressViewStyle(tint: .black))
                                       .scaleEffect(1.5, anchor: .center)
                                 }
+                            } else if !dailyPuzzle!.solved {
+                                NavigationLink(destination: DailyPuzzleView(dailyPuzzle: dailyPuzzle!)) {
+                                    ZStack {
+                                        Capsule()
+                                            .stroke(.black, lineWidth: 5)
+                                            .fill(.mcPurple)
+                                            .frame(width: 200, height: 50)
+                                        Text("play")
+                                            .font(.custom("sansita", size: 25))
+                                            .tint(.black)
+                                            .bold()
+                                    }
+                                }
+                            } else {
+                                NavigationLink(destination: DailyPuzzleView(dailyPuzzle: dailyPuzzle!)) {
+                                    ZStack {
+                                        Capsule()
+                                            .stroke(.black, lineWidth: 5)
+                                            .fill(.mcPurple)
+                                            .frame(width: 300, height: 50)
+                                        Text("Next clue in: **\(convertSecondsToDateString(seconds: timeRemaining))**")
+                                            .font(.custom("mulish", size: 25))
+                                            .tint(.black)
+                                    }
+                                }
                             }
                         }
                     }
@@ -93,6 +116,7 @@ struct HomeView: View {
                             .frame(height: 120)
                             .padding(.horizontal, 15)
                             .padding(.top, 10)
+                            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         
                         VStack {
                             Text("Weekly Mini")
@@ -125,6 +149,7 @@ struct HomeView: View {
                             .frame(height: 120)
                             .padding(.horizontal, 15)
                             .padding(.top, 10)
+                            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         
                         VStack {
                             Text("Archive")
@@ -157,6 +182,7 @@ struct HomeView: View {
                             .frame(height: 120)
                             .padding(.horizontal, 15)
                             .padding(.top, 10)
+                            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         
                         VStack {
                             Text("Submit Clues")
@@ -184,8 +210,19 @@ struct HomeView: View {
                 }
                 .background(.mcBlue)
             }
+            .onAppear {
+                let currentTime: Date = Date()
+                let tomorrow: Date = Date(timeInterval: 86400, since: currentTime)
+                let midnight: Date = Calendar.current.startOfDay(for: tomorrow)
+                timeRemaining = Int(midnight.timeIntervalSince(currentTime))
+            }
             .task {
                 await getDailyPuzzle()
+            }
+            .onReceive(timer) { time in
+                if timeRemaining > 0 {
+                    timeRemaining -= 1
+                }
             }
         }
     }

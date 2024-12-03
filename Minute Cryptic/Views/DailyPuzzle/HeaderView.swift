@@ -10,6 +10,8 @@ import SwiftUI
 struct HeaderView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
+    @Binding var showHelpSheet: Bool
+    
     var body: some View {
         HStack {
             Button(action: { presentationMode.wrappedValue.dismiss() }) {
@@ -19,6 +21,15 @@ struct HeaderView: View {
                     .bold()
             }
             .padding(.leading, 20)
+            
+            Button(action: { showHelpSheet.toggle() }) {
+                Image(systemName: "questionmark.app.fill")
+                    .foregroundStyle(.mcYellow)
+                    .background(.black)
+                    .bold()
+                    .font(.title)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+            }
             
             Spacer()
             
@@ -41,5 +52,13 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView()
+    struct HeaderView_Preview: View {
+        @State var showHelpSheet: Bool = false
+        
+        var body: some View {
+            HeaderView(showHelpSheet: $showHelpSheet)
+        }
+    }
+    
+    return HeaderView_Preview()
 }

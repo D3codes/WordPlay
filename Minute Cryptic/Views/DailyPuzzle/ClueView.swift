@@ -16,7 +16,7 @@ struct ClueView: View {
         for clue in dailyPuzzle.puzzle.clue {
             if clue.type == "definition" && dailyPuzzle.highlightDefinition {
                 var highlight = AttributedString(clue.text)
-                highlight.backgroundColor = Color("mcBlue")
+                highlight.backgroundColor = .mcBlue
                 result += highlight
             } else {
                 result += AttributedString(clue.text)
@@ -34,7 +34,6 @@ struct ClueView: View {
         ZStack {
             Rectangle()
                 .fill(.background)
-                .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 10)
             
             Text(message)
                 .font(.custom("mulish", size: 20))
