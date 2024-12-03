@@ -103,6 +103,7 @@ struct HomeView: View {
                                         Text("Next clue in: **\(convertSecondsToDateString(seconds: timeRemaining))**")
                                             .font(.custom("mulish", size: 25))
                                             .tint(.black)
+                                            .contentTransition(.numericText())
                                     }
                                 }
                             }
@@ -221,7 +222,9 @@ struct HomeView: View {
             }
             .onReceive(timer) { time in
                 if timeRemaining > 0 {
-                    timeRemaining -= 1
+                    withAnimation {
+                        timeRemaining -= 1
+                    }
                 }
             }
         }

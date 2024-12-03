@@ -167,7 +167,7 @@ struct HelpView: View {
                     .bold()
                 
                 Text("It could also be \"the Spanish\" (which comes at the end) but it's hard to think of 7-letter synonyms for \"the Spanish\". And you might already be able to think of a synonym for \(underlineText("struggle")) that fits here!")
-                    .font(.custom("mulish", size: 25))
+                    .font(.custom("mulish", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text("The wordplay is \(underlineText("with siesta upsetting the Spanish")). How does this work?")
@@ -239,6 +239,145 @@ struct HelpView: View {
                     .font(.custom("mulish", size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .bold()
+                
+                Divider()
+                    .frame(height: 2)
+                    .background(.primary)
+            }
+            .padding(.horizontal, 10)
+            
+            VStack(spacing: 10) {
+                Text("Common Signposts")
+                    .font(.custom("mulish", size: 25))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .bold()
+                
+                Text("Rearranging:")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .bold()
+                
+                Text("Probably the easiest and most common, this signpost tells you to rearrange a word or words - to find an anagram.")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Common rearranging signposts:")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• order")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• destroy")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• hit")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• mix")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• sort")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Example: **Guns of war or any power play (8)**. By playing with the words \"any power\", we can rearrange them into the word \"weaponry\", for guns of war.")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Inserting/Surrounding:")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .bold()
+                
+                Text("This signpost indicates that you should put letters or words into another word, or put a word around some letters.")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Common inserting/surrounding signposts:")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• in")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• inside")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• entering")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• outside")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• capturing")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• without")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Example: **Old South American hotel outside California (5)**. By putting \"inn\" (for hotel) outside \"CA\" (for California), we can get \"Incan\" - a person from an old South American culture.")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Shortening:")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .bold()
+                
+                Text("A shortening signpost directs you to remove part of a word, or keep only part of a word.")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Common shortening signposts:")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• dropping")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• without")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• disheartened")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• empty")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• first")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• last")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("• clothing")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Example: **Fugitive without a landing strip (6)**. Here, \"without a\" instructs us to remove an \"a\" from runaway (for fugitive), giving \"runway\" - a landing strip!")
+                    .font(.custom("mulish", size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Divider()
+                    .frame(height: 2)
+                    .background(.primary)
             }
             .padding(.horizontal, 10)
         }
